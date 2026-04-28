@@ -221,12 +221,12 @@ done
 MODELS_JSON="$MODELS_JSON]"
 
 # Merge with timestamp and prompt
-FINAL_JSON=$(python3 << PYSCRIPT
+FINAL_JSON=$(python3 << 'PYSCRIPT'
 import json
 import sys
 
-timestamp = "$TIMESTAMP"
-prompt = "$PROMPT"
+timestamp = """$TIMESTAMP"""
+prompt = """$PROMPT"""
 models = $MODELS_JSON
 
 success_count = sum(1 for m in models if m.get('success'))
