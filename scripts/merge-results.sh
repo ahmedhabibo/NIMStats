@@ -1,18 +1,14 @@
 #!/bin/bash
 
-# Merge results from parallel test groups into single results.json and update history.json
+# Merge parallel group outputs and update history.json (source of truth)
 
 set -e
-
-HISTORY_FILE="../history.json"
-OUTPUT_FILE="results.json"
 
 echo "Merging results from all groups..."
 
 python3 << 'PYSCRIPT'
 import json
 import os
-from datetime import datetime
 
 # Collect results from all group files
 all_models = []
@@ -56,12 +52,6 @@ merged_result = {
         "fastestTime": fastest_time
     }
 }
-
-# Write merged results.json
-with open("results.json", "w") as f:
-    json.dump(merged_result, f, indent=2)
-
-print(f"✓ Merged {total_count} results into results.json")
 
 # Update history.json
 if os.path.exists("../history.json"):

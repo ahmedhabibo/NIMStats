@@ -92,18 +92,18 @@ Cloudflare Pages / GitHub Pages / Netlify
 ## 📝 Customization
 
 ### Change Benchmark Prompt
-Edit `scripts/test-models.sh` line 13:
-```bash
+Edit `PROMPT` in `scripts/test_models.py`:
+```python
 PROMPT="Your custom prompt here"
 ```
 
 ### Add/Remove Models
-Edit `scripts/test-models.sh` model arrays (lines 19-51):
-```bash
-GROUP1_MODELS=(
-    "your/custom-model"
+Edit model arrays in `scripts/test_models.py`:
+```python
+GROUP1_MODELS = [
+    "your/custom-model",
     # ...
-)
+]
 ```
 
 ### Change Schedule
@@ -116,7 +116,8 @@ Edit `.github/workflows/benchmark.yml` line 5:
 
 ## 📊 Data Format
 
-Results stored in `history.json` - plain JSON, easily exportable to Excel/Python.
+`history.json` is the single persisted source of truth for the dashboard and history.
+`scripts/results.json` is only a temporary per-job artifact during workflow execution.
 
 ```json
 {
