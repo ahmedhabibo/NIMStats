@@ -1,6 +1,216 @@
 {
   "runs": [
     {
+      "timestamp": "2026-05-02T19:26:11Z",
+      "prompt": "Write a Python function that checks if a number is prime and returns True or False",
+      "models": [
+        {
+          "model": "deepseek-ai/deepseek-v4-flash",
+          "success": true,
+          "responseTime": 144921,
+          "tokensGenerated": 466,
+          "totalTokens": 486,
+          "response": "Here's a Python function that checks if a number is prime:\n\n```python\ndef is_prime(n):\n    \"\"\"\n    Check if a number is prime.\n    \n    Args:\n        n: Integer to check\n    \n    Returns:\n        True if n is prime, False otherwise\n    \"\"\"\n    # Handle edge cases\n    if n <= 1:\n        return False\n    if n <= 3:\n        return True\n    \n    # Check if divisible by 2 or 3\n    if n % 2 == 0 or n % 3 == 0:\n        return False\n    \n    # Check divisors up to sqrt(n)\n    # All primes > 3 can be written as 6k \u00b1 1\n    i = 5\n    while i * i <= n:\n        if n % i == 0 or n % (i + 2) == 0:\n            return False\n        i += 6\n    \n    return True\n```\n\nHere's a simpler version if you prefer:\n\n```python\ndef is_prime_simple(n):\n    \"\"\"Simple prime checking function.\"\"\"\n    if n <= 1:\n        return False\n    if n <= 3:\n        return True\n    \n    for i in range(2, int(n ** 0.5) + 1):\n        if n % i == 0:\n            return False\n    \n    return True\n```\n\n**Usage examples:**\n\n```python\n# Test the function\nprint(is_prime(2))    # True\nprint(is_prime(3))    # True\nprint(is_prime(4))    # False\nprint(is_prime(17))   # True\nprint(is_prime(1))    # False\nprint(is_prime(97))   # True\nprint(is_prime(100))  # False\n```\n\n**Key points about the optimized version:**\n- Handles edge cases (numbers \u2264 1 are not prime)\n- Checks divisibility by 2 and 3 first\n- Uses the 6k \u00b1 1 optimization (all primes > 3 are of the form 6k \u00b1 1)\n- Only checks up to \u221an, which is the mathematical maximum needed\n- More efficient for larger numbers\n\nThe simple version is easier to understand but slightly less efficient for very large numbers.",
+          "error": null
+        },
+        {
+          "model": "deepseek-ai/deepseek-v4-pro",
+          "success": true,
+          "responseTime": 178602,
+          "tokensGenerated": 500,
+          "totalTokens": 520,
+          "response": "Here are a few implementations of a prime-checking function, from simple to optimized:\n\n## Basic Implementation\n\n```python\ndef is_prime(n):\n    \"\"\"Check if a number is prime.\"\"\"\n    if n <= 1:\n        return False\n    \n    for i in range(2, n):\n        if n % i == 0:\n            return False\n    \n    return True\n```\n\n## Optimized Implementation (Recommended)\n\n```python\ndef is_prime(n):\n    \"\"\"Check if a number is prime - optimized version.\"\"\"\n    # Handle special cases\n    if n <= 1:\n        return False\n    if n <= 3:\n        return True\n    if n % 2 == 0 or n % 3 == 0:\n        return False\n    \n    # Check for factors up to sqrt(n)\n    # Only need to check numbers of form 6k \u00b1 1\n    i = 5\n    while i * i <= n:\n        if n % i == 0 or n % (i + 2) == 0:\n            return False\n        i += 6\n    \n    return True\n```\n\n## Alternative with Early Optimization\n\n```python\ndef is_prime(n):\n    \"\"\"Check if a number is prime with square root optimization.\"\"\"\n    if n <= 1:\n        return False\n    if n == 2:\n        return True\n    if n % 2 == 0:\n        return False\n    \n    # Check odd divisors up to sqrt(n)\n    for i in range(3, int(n**0.5) + 1, 2):\n        if n % i == 0:\n            return False\n    \n    return True\n```\n\n## Example Usage\n\n```python\n# Test the function\ntest_numbers = [1, 2, 3, 4, 5, 17, 25, 97, 100]\nfor num in test_numbers:\n    result = is_prime(num)\n    print(f\"{num} is prime: {result}\")\n```\n\n**Output:**\n```\n1 is prime: False\n2 is prime: True\n3 is prime: True\n4 is prime: False\n5 is prime: True\n17 is prime: True\n25 is prime: False\n97 is prime: True\n100 is prime: False\n```\n\n## Key Optimizations Explained:\n\n1. **Handle special cases first** (n \u2264 1, n = 2, n = 3",
+          "error": null
+        },
+        {
+          "model": "deepseek-ai/deepseek-v3.2",
+          "success": true,
+          "responseTime": 52612,
+          "tokensGenerated": 500,
+          "totalTokens": 520,
+          "response": "Here's a Python function that checks if a number is prime:\n\n```python\ndef is_prime(n):\n    \"\"\"\n    Check if a number is prime.\n    \n    Parameters:\n    n (int): The number to check\n    \n    Returns:\n    bool: True if n is prime, False otherwise\n    \"\"\"\n    # Handle edge cases\n    if n <= 1:\n        return False\n    \n    # Check for divisibility from 2 to sqrt(n)\n    # We only need to check up to sqrt(n) because if n has a factor\n    # greater than sqrt(n), it must have a corresponding factor less than sqrt(n)\n    for i in range(2, int(n**0.5) + 1):\n        if n % i == 0:\n            return False\n    \n    return True\n\n\n# Example usage:\nif __name__ == \"__main__\":\n    # Test cases\n    test_numbers = [2, 3, 5, 7, 11, 13, 4, 6, 8, 9, 10, 1, 0, -5]\n    \n    for num in test_numbers:\n        result = is_prime(num)\n        print(f\"{num} is prime: {result}\")\n```\n\n**Alternative optimized version** (slightly faster for checking many numbers):\n\n```python\ndef is_prime_optimized(n):\n    \"\"\"\n    Optimized prime checking function.\n    \"\"\"\n    if n <= 1:\n        return False\n    if n <= 3:\n        return True\n    if n % 2 == 0 or n % 3 == 0:\n        return False\n    \n    # Check for divisibility by numbers of the form 6k \u00b1 1\n    # All primes greater than 3 are of the form 6k \u00b1 1\n    i = 5\n    while i * i <= n:\n        if n % i == 0 or n % (i + 2) == 0:\n            return False\n        i += 6\n    \n    return True\n```\n\n**Explanation of the algorithm:**\n\n1. **Edge cases**: Numbers \u2264 1 are not prime by definition\n2. **Optimization**: We only need to check divisors up to \u221an\n   - If n has a divisor d > \u221an, then n/d < \u221an would also be a divisor\n3. **Mathematical property**: All primes > 3 are of",
+          "error": null
+        },
+        {
+          "model": "z-ai/glm-5.1",
+          "success": true,
+          "responseTime": 32735,
+          "tokensGenerated": 428,
+          "totalTokens": 449,
+          "response": "Here is a Python function to check if a number is prime. \n\nI've included a few optimizations to make it run efficiently, even for larger numbers:\n\n```python\ndef is_prime(n):\n    # Numbers less than or equal to 1 are not prime\n    if n <= 1:\n        return False\n    \n    # 2 is the only even prime number\n    if n == 2:\n        return True\n    \n    # All other even numbers are not prime\n    if n % 2 == 0:\n        return False\n    \n    # Check odd numbers up to the square root of n\n    # We step by 2 to skip even numbers, making it faster\n    for i in range(3, int(n**0.5) + 1, 2):\n        if n % i == 0:\n            return False\n            \n    return True\n\n# --- Examples of usage ---\nprint(is_prime(11))  # Output: True\nprint(is_prime(15))  # Output: False\nprint(is_prime(2))   # Output: True\nprint(is_prime(1))   # Output: False\nprint(is_prime(-7))  # Output: False\n```\n\n### Why this is optimized:\n1. **Handles edge cases early:** It immediately filters out numbers less than 2 (which aren't prime) and handles `2` as a special case since it's the only even prime.\n2. **Skips even numbers:** By checking `n % 2 == 0` early, we eliminate half the numbers immediately. Then, in the loop, `range(3, ..., 2)` only checks odd numbers (3, 5, 7, 9, etc.).\n3. **Stops at the square root:** Mathematically, if a number `n` has a factor larger than its square root, it must also have a factor smaller than its square root. Therefore, we only need to check up to `int(n**0.5) + 1`. This drastically reduces the number of loops for large numbers.",
+          "error": null
+        },
+        {
+          "model": "z-ai/glm-4.7",
+          "success": false,
+          "error": "Invalid JSON response: Extra data at line 1 column 5",
+          "responseTime": null,
+          "tokensGenerated": null,
+          "totalTokens": null,
+          "response": null
+        },
+        {
+          "model": "minimaxai/minimax-m2.7",
+          "success": true,
+          "responseTime": 14197,
+          "tokensGenerated": 500,
+          "totalTokens": 554,
+          "response": "\n\nHere\u2019s a compact, easy\u2011to\u2011read implementation that follows the usual \u201ctrial\u2011division\u201d approach. It works for any integer (including negative numbers, 0 and 1) and returns a **bool** (`True`\u202fif the number is prime, `False` otherwise).\n\n```python\nimport math\nfrom typing import Union\n\ndef is_prime(n: Union[int, float]) -> bool:\n    \"\"\"\n    Return True if `n` is a prime number, otherwise return False.\n\n    Parameters\n    ----------\n    n : int or float\n        The number to test. Non\u2011integer values are converted to int\n        (the fractional part is discarded).\n\n    Returns\n    -------\n    bool\n        True  -> `n` is prime\n        False -> `n` is composite, 0, 1, negative, or not an integer.\n\n    Examples\n    --------\n    >>> is_prime(2)\n    True\n    >>> is_prime(15)\n    False\n    >>> is_prime(-7)\n    False\n    \"\"\"\n    # ------------------------------------------------------------------\n    # 1. Guard against non\u2011integers and negative numbers.\n    # ------------------------------------------------------------------\n    # Convert to int (truncates) and keep the original sign for later.\n    try:\n        n = int(n)\n    except (TypeError, ValueError):\n        # If `n` cannot be converted to an integer, it's definitely not prime.\n        return False\n\n    # Prime numbers are defined only for integers >= 2.\n    if n < 2:\n        return False\n\n    # 2. Quick elimination of the only even prime.\n    if n == 2:\n        return True\n    if n % 2 == ",
+          "error": null
+        },
+        {
+          "model": "minimaxai/minimax-m2.5",
+          "success": true,
+          "responseTime": 4833,
+          "tokensGenerated": 500,
+          "totalTokens": 554,
+          "response": "\n\nHere\u2019s a compact, easy\u2011to\u2011read implementation that follows the usual \u201ccheck up to \u221an\u201d rule and also handles the small\u2011number edge cases:\n\n```python\ndef is_prime(n: int) -> bool:\n    \"\"\"\n    Return True if `n` is a prime number, otherwise return False.\n\n    Parameters\n    ----------\n    n : int\n        The integer to test for primality. Negative numbers,\n        0 and 1 are not prime.\n\n    Returns\n    -------\n    bool\n        True if `n` is prime, False otherwise.\n    \"\"\"\n    # Quick rejection of non\u2011positive integers\n    if n <= 1:\n        return False\n    # 2 is the only even prime\n    if n == 2:\n        return True\n    # Eliminate even numbers > 2\n    if n % 2 == 0:\n        return False\n\n    # Check odd divisors up to sqrt(n)\n    limit = int(n ** 0.5) + 1\n    for divisor in range(3, limit, 2):\n        if n % divisor == 0:\n            return False\n\n    return True\n```\n\n### How it works\n1. **Small numbers** \u2013 Numbers \u2264\u202f1 are not prime.  \n2. **Even numbers** \u2013 2 is the only even prime; any other even number is immediately marked non\u2011prime.  \n3. **Odd divisors** \u2013 After handling 2",
+          "error": null
+        },
+        {
+          "model": "nvidia/nemotron-3-super-120b-a12b",
+          "success": true,
+          "responseTime": 15566,
+          "tokensGenerated": 500,
+          "totalTokens": 532,
+          "response": "Here\u2019s a compact, easy\u2011to\u2011read implementation that works for any non\u2011negative integer. It handles the usual edge cases (numbers <\u202f2 are not prime) and only tests divisors up to \u221an, which makes it fast enough for typical use\u2011cases.\n\n```python\nimport math\n\ndef is_prime(n: int) -> bool:\n    \"\"\"\n    Return True if `n` is a prime number, otherwise False.\n\n    Parameters\n    ----------\n    n : int\n        The integer to test. Negative numbers, 0 and 1 are considered non\u2011prime.\n\n    Returns\n    -------\n    bool\n        True if n is prime, False otherwise.\n    \"\"\"\n    # 1. Quick rejects for numbers less than 2\n    if n < 2:\n        return False\n\n    # 2. 2 and 3 are the only even/odd primes we need to treat specially\n    if n in (2, 3):\n        return True\n\n    # 3. Eliminate even numbers and multiples of 3 early\n    if n % 2 == 0 or n % 3 == 0:\n        return False\n\n    # 4. Check possible factors of the form 6k \u00b1 1 up to sqrt(n)\n    limit = int(math.isqrt(n))          # integer sqrt, no floating\u2011point errors\n    i = 5\n    while i <= limit:\n        if n % i == 0 or n % (i + 2) == 0:\n            return False\n        i += 6                          # jump to the next pair (6k\u20111, 6k+1)\n\n    return True\n```\n\n### How it works\n1. **Trivial cases** \u2013 Numbers `<\u202f2` are not prime; `2` and `3` are prime.\n2. **Early elimination** \u2013 Any even number or multiple of `3` (except `2` and `3` themselves) cannot be prime.\n3. **6k\u202f\u00b1\u202f1 optimization** \u2013 All primes greater than `3` can be written as `",
+          "error": null
+        },
+        {
+          "model": "nvidia/nemotron-4-340b-instruct",
+          "success": false,
+          "error": "HTTP 404 returned by API",
+          "responseTime": null,
+          "tokensGenerated": null,
+          "totalTokens": null,
+          "response": null
+        },
+        {
+          "model": "nvidia/llama-3.1-nemotron-ultra-253b-v1",
+          "success": false,
+          "error": "HTTP 404 returned by API",
+          "responseTime": null,
+          "tokensGenerated": null,
+          "totalTokens": null,
+          "response": null
+        },
+        {
+          "model": "moonshotai/kimi-k2.5",
+          "success": false,
+          "error": "HTTP 410 returned by API",
+          "responseTime": null,
+          "tokensGenerated": null,
+          "totalTokens": null,
+          "response": null
+        },
+        {
+          "model": "moonshotai/kimi-k2-instruct",
+          "success": true,
+          "responseTime": 19846,
+          "tokensGenerated": 310,
+          "totalTokens": 342,
+          "response": "```python\nimport math\n\ndef is_prime(n: int) -> bool:\n    \"\"\"\n    Return True if `n` is a prime number, otherwise False.\n\n    A prime number is an integer greater than 1 that has no positive divisors\n    other than 1 and itself.\n\n    Parameters\n    ----------\n    n : int\n        The number to test.\n\n    Returns\n    -------\n    bool\n        True  -> `n` is prime\n        False -> `n` is not prime\n    \"\"\"\n    # 0, 1 and negative numbers are not prime\n    if n < 2:\n        return False\n\n    # 2 is the only even prime\n    if n == 2:\n        return True\n\n    # Even numbers > 2 are not prime\n    if n % 2 == 0:\n        return False\n\n    # Check odd factors up to \u221an\n    limit = int(math.isqrt(n)) + 1\n    for divisor in range(3, limit, 2):\n        if n % divisor == 0:\n            return False\n\n    return True\n\n\n# Quick sanity checks\nif __name__ == \"__main__\":\n    test_values = [-5, 0, 1, 2, 3, 4, 5, 17, 18, 19, 20, 97, 100]\n    for v in test_values:\n        print(f\"{v:3d} -> {is_prime(v)}\")\n```",
+          "error": null
+        },
+        {
+          "model": "openai/gpt-oss-120b",
+          "success": true,
+          "responseTime": 4369,
+          "tokensGenerated": 500,
+          "totalTokens": 581,
+          "response": "Below is a compact, well\u2011documented implementation that follows the classic \u201ctrial\u2011division up to \u221an\u201d algorithm.  \nIt works for any integer (including negative numbers and 0/1, which are **not** prime) and runs in\u202fO(\u221an) time.\n\n```python\nimport math\nfrom typing import Union\n\ndef is_prime(n: Union[int, bool]) -> bool:\n    \"\"\"\n    Return True if *n* is a prime number, otherwise False.\n\n    A prime is an integer greater than 1 that has no positive divisors\n    other than 1 and itself.\n\n    Parameters\n    ----------\n    n : int or bool\n        The number to test.  Booleans are accepted because ``True`` == 1\n        and ``False`` == 0, and they are handled correctly.\n\n    Returns\n    -------\n    bool\n        True  \u2192 n is prime\n        False \u2192 n is composite, 0, 1, or negative\n\n    Examples\n    --------\n    >>> is_prime(2)\n    True\n    >>> is_prime(15)\n    False\n    >>> is_prime(-7)\n    False\n    >>> is_prime(7919)          # a larger prime\n    True\n    \"\"\"\n    # 1. Fast rejects for numbers <= 1\n    if n <= 1:\n        return False\n\n    # 2. 2 and 3 are the only even/odd primes below 4\n    if n <= 3:\n        return True\n\n    # 3. Eliminate even numbers and multiples of 3 early\n    if n % 2 == 0 or n % 3 == 0:\n        return False\n\n    # 4. Check potential factors of the form 6k \u00b1 1 up to \u221an\n    #    All primes > 3 are of that form, so we can skip many candidates.\n    limit = int(math.isqrt(n))          # integer square\u2011root, no floating\u2011point\n    i = 5\n   ",
+          "error": null
+        },
+        {
+          "model": "google/gemma-4-31b-it",
+          "success": true,
+          "responseTime": 244228,
+          "tokensGenerated": 500,
+          "totalTokens": 529,
+          "response": "Here is a clean, efficient way to write this function in Python.\n\n### The Code\n\n```python\nimport math\n\ndef is_prime(n):\n    # 1. Handle numbers less than 2 (0 and 1 are not prime)\n    if n < 2:\n        return False\n    \n    # 2. Handle 2 separately (the only even prime)\n    if n == 2:\n        return True\n    \n    # 3. Eliminate all other even numbers immediately\n    if n % 2 == 0:\n        return False\n    \n    # 4. Check odd divisors from 3 up to the square root of n\n    # We jump by 2 to skip even numbers (3, 5, 7...)\n    limit = int(math.sqrt(n)) + 1\n    for i in range(3, limit, 2):\n        if n % i == 0:\n            return False\n            \n    return True\n\n# --- Testing the function ---\ntest_numbers = [1, 2, 3, 4, 11, 15, 17, 19, 25, 29]\nfor num in test_numbers:\n    print(f\"{num}: {is_prime(num)}\")\n```\n\n### Key Explanations:\n\n1.  **The Base Cases:** We immediately return `False` for numbers less than 2, as prime numbers must be greater than 1.\n2.  **The Even Number Shortcut:** By checking `if n % 2 == 0` early, we can skip half of all possible numbers in our loop, making the function twice as fast.\n3.  **The Square Root Optimization:** This is the most important part for performance. If a number $n$ has a factor, at least one of those factors must be less than or equal to $\\sqrt{n}$. For example, if you are checking if $100$ is prime, you only need to check numbers up to $10$. If no factor is found by then, none will be found.\n4.  **The Step Value:** In `range(3, limit, 2)`, the `2` tells Python to skip every other number. Since we already checked if the number was even,",
+          "error": null
+        },
+        {
+          "model": "qwen/qwen3-coder-480b-a35b-instruct",
+          "success": true,
+          "responseTime": 4049,
+          "tokensGenerated": 328,
+          "totalTokens": 352,
+          "response": "Here's a Python function that checks if a number is prime:\n\n```python\ndef is_prime(n):\n    \"\"\"\n    Check if a number is prime.\n    \n    Args:\n        n (int): The number to check\n        \n    Returns:\n        bool: True if the number is prime, False otherwise\n    \"\"\"\n    # Handle edge cases\n    if n < 2:\n        return False\n    if n == 2:\n        return True\n    if n % 2 == 0:\n        return False\n    \n    # Check odd divisors up to sqrt(n)\n    for i in range(3, int(n**0.5) + 1, 2):\n        if n % i == 0:\n            return False\n    \n    return True\n\n# Example usage:\nprint(is_prime(2))    # True\nprint(is_prime(3))    # True\n0))   # False\nprint(is_prime(17))   # True\nprint(is_prime(25))   # False\n```\n\nThis function works by:\n\n1. **Handling edge cases**: Numbers less than 2 are not prime, 2 is prime, and even numbers greater than 2 are not prime\n2. **Optimizing the search**: Only check odd divisors up to \u221an, since if n has a divisor greater than \u221an, it must also have a corresponding divisor less than \u221an\n3. **Returning the result**: If no divisors are found, the number is prime\n\nThe time complexity is O(\u221an), making it efficient for reasonably sized numbers.",
+          "error": null
+        },
+        {
+          "model": "qwen/qwen2.5-coder-32b-instruct",
+          "success": true,
+          "responseTime": 5684,
+          "tokensGenerated": 383,
+          "totalTokens": 428,
+          "response": "Certainly! Below is a Python function that checks if a given number is prime. A prime number is a natural number greater than 1 that has no positive divisors other than 1 and itself.\n\n```python\ndef is_prime(n):\n    \"\"\"Check if a number is prime.\"\"\"\n    if n <= 1:\n        return False\n    if n <= 3:\n        return True\n    if n % 2 == 0 or n % 3 == 0:\n        return False\n    i = 5\n    while i * i <= n:\n        if n % i == 0 or n % (i + 2) == 0:\n            return False\n        i += 6\n    return True\n\n# Example usage:\nprint(is_prime(11))  # Output: True\nprint(is_prime(4))   # Output: False\n```\n\n### Explanation:\n1. **Initial Checks**:\n   - If `n` is less than or equal to 1, it is not prime.\n   - If `n` is 2 or 3, it is prime (since 2 and 3 are the first two prime numbers).\n\n2. **Divisibility by 2 or 3**:\n   - If `n` is divisible by 2 or 3, it is not prime.\n\n3. **Checking Further Divisors**:\n   - We start checking from 5 and increment by 6 each time (i.e., we check 5, 11, 17, ...).\n   - For each `i`, we check if `n` is divisible by `i` or `i + 2`.\n   - This works because all primes greater than 3 can be written in the form of 6k \u00b1 1.\n\nThis method is efficient for checking primality, especially for larger numbers.",
+          "error": null
+        },
+        {
+          "model": "qwen/qwen3.5-397b-a17b",
+          "success": true,
+          "responseTime": 10340,
+          "tokensGenerated": 195,
+          "totalTokens": 223,
+          "response": "```python\ndef is_prime(n: int) -> bool:\n    \"\"\"Return True if n is a prime number, otherwise False.\"\"\"\n    if n <= 1:\n        return False\n    if n <= 3:\n        return True  # 2 and 3 are prime\n    if n % 2 == 0 or n % 3 == 0:\n        return False\n\n    # Check for factors from 5 to sqrt(n), skipping even numbers\n    i = 5\n    while i * i <= n:\n        if n % i == 0 or n % (i + 2) == 0:\n            return False\n        i += 6\n    return True\n```\n\nExample usage:\n```python\nprint(is_prime(2))   # True\nprint(is_prime(17))  # True\nprint(is_prime(18))  # False\n```",
+          "error": null
+        },
+        {
+          "model": "mistralai/devstral-2-123b-instruct-2512",
+          "success": true,
+          "responseTime": 8478,
+          "tokensGenerated": 311,
+          "totalTokens": 330,
+          "response": "Here's a Python function that checks if a number is prime and returns `True` or `False`:\n\n```python\ndef is_prime(n):\n    \"\"\"Check if a number is prime.\"\"\"\n    if n <= 1:\n        return False\n    if n == 2:\n        return True\n    if n % 2 == 0:\n        return False\n    for i in range(3, int(n**0.5) + 1, 2):\n        if n % i == 0:\n            return False\n    return True\n```\n\n### Explanation:\n1. **Edge Cases**:\n   - Numbers less than or equal to 1 are not prime.\n   - 2 is the only even prime number.\n   - Any other even number is not prime.\n\n2. **Efficiency**:\n   - The loop checks divisibility from 3 up to the square root of `n` (since a larger factor would have a corresponding smaller factor that would have been checked already).\n   - The loop increments by 2 to skip even numbers (further optimizing the check).\n\n### Example Usage:\n```python\nprint(is_prime(5))   # Output: True\nprint(is_prime(4))   # Output: False\nprint(is_prime(1))   # Output: False\nprint(is_prime(2))   # Output: True\nprint(is_prime(29))  # Output: True\nprint(is_prime(100)) # Output: False\n```",
+          "error": null
+        },
+        {
+          "model": "mistralai/mistral-large-3-675b-instruct-2512",
+          "success": true,
+          "responseTime": 58129,
+          "tokensGenerated": 321,
+          "totalTokens": 340,
+          "response": "Here's a Python function that checks if a number is prime and returns `True` or `False`:\n\n```python\ndef is_prime(n):\n    \"\"\"Check if a number is prime.\n\n    Args:\n        n (int): The number to check.\n\n    Returns:\n        bool: True if the number is prime, False otherwise.\n    \"\"\"\n    if n <= 1:\n        return False\n    if n == 2:\n        return True\n    if n % 2 == 0:\n        return False\n    # Check for divisors up to the square root of n\n    for i in range(3, int(n ** 0.5) + 1, 2):\n        if n % i == 0:\n            return False\n    return True\n```\n\n### Explanation:\n1. **Edge Cases**:\n   - Numbers less than or equal to 1 are not prime.\n   - The number 2 is the only even prime number.\n   - Any other even number is not prime.\n\n2. **Efficiency**:\n   - The function checks divisibility up to the square root of `n` (since a larger factor would imply a smaller factor already checked).\n   - It skips even numbers after checking for 2, improving efficiency.\n\n### Example Usage:\n```python\nprint(is_prime(5))   # Output: True\nprint(is_prime(4))   # Output: False\nprint(is_prime(1))   # Output: False\nprint(is_prime(17))  # Output: True\n```",
+          "error": null
+        },
+        {
+          "model": "meta/llama-3_3-70b-instruct",
+          "success": false,
+          "error": "Invalid JSON response: Extra data at line 1 column 5",
+          "responseTime": null,
+          "tokensGenerated": null,
+          "totalTokens": null,
+          "response": null
+        },
+        {
+          "model": "meta/llama-4-maverick-17b-128e-instruct",
+          "success": true,
+          "responseTime": 4440,
+          "tokensGenerated": 460,
+          "totalTokens": 486,
+          "response": "**Prime Number Checker Function**\n================================\n\n### Function Description\n\nThe following Python function checks if a given number is prime and returns `True` if it is, `False` otherwise.\n\n### Code\n\n```python\ndef is_prime(n: int) -> bool:\n    \"\"\"\n    Checks if a number is prime.\n\n    Args:\n        n (int): The number to check.\n\n    Returns:\n        bool: True if the number is prime, False otherwise.\n    \"\"\"\n    if n <= 1:\n        return False\n    if n == 2:\n        return True\n    if n % 2 == 0:\n        return False\n    max_divisor = int(n**0.5) + 1\n    for d in range(3, max_divisor, 2):\n        if n % d == 0:\n            return False\n    return True\n\n# Example usage\ndef main():\n    numbers = [2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]\n    for num in numbers:\n        print(f\"{num} is prime: {is_prime(num)}\")\n\nif __name__ == \"__main__\":\n    main()\n```\n\n### Explanation\n\n1. The function `is_prime(n)` takes an integer `n` as input and returns a boolean value.\n2. It first checks if `n` is less than or equal to 1, in which case it is not prime.\n3. It then checks if `n` is 2, the only even prime number.\n4. If `n` is even and not 2, it is not prime.\n5. For odd numbers, it checks divisibility up to the square root of `n`, as any factor larger than that would have a corresponding factor smaller than the square root.\n6. The `main` function demonstrates the usage of `is_prime` with a list of numbers.\n\n### Running the Code\n\nTo run this code, save it to a file (e.g., `prime_checker.py`) and execute it using Python (e.g., `python prime_checker.py`). The example usage in the `main` function will print whether each number in the list is prime.",
+          "error": null
+        },
+        {
+          "model": "meta/llama-3.2-90b-vision-instruct",
+          "success": true,
+          "responseTime": 36725,
+          "tokensGenerated": 411,
+          "totalTokens": 462,
+          "response": "**Prime Number Checker Function**\n=====================================\n\nHere's a simple Python function that checks if a given number is prime.\n\n```python\ndef is_prime(n):\n    \"\"\"\n    Checks if a number is prime.\n\n    Args:\n        n (int): The number to check.\n\n    Returns:\n        bool: True if the number is prime, False otherwise.\n\n    Raises:\n        ValueError: If the input is not an integer or is less than 2.\n    \"\"\"\n\n    # Check if the input is an integer\n    if not isinstance(n, int):\n        raise ValueError(\"Input must be an integer.\")\n\n    # Check if the input is less than 2\n    if n < 2:\n        raise ValueError(\"Input must be 2 or greater.\")\n\n    # 2 is the only even prime number\n    if n == 2:\n        return True\n\n    # All other even numbers are not prime\n    if n % 2 == 0:\n        return False\n\n    # Only need to check up to the square root of n\n    for i in range(3, int(n**0.5) + 1, 2):\n        if n % i == 0:\n            return False\n\n    return True\n```\n\n**Example Use Cases**\n--------------------\n\n```python\nprint(is_prime(25))  # False\nprint(is_prime(23))  # True\nprint(is_prime(37))  # True\nprint(is_prime(48))  # False\n\n# Test edge cases\ntry:\n    print(is_prime(1))  # Raises ValueError\nexcept ValueError as e:\n    print(e)\n\ntry:\n    print(is_prime(2.5))  # Raises ValueError\nexcept ValueError as e:\n    print(e)\n```\n\nThis function works by checking divisibility up to the square root of the input number, making it more efficient than checking all the way up to the number itself. It also includes input validation to ensure the input is an integer greater than or equal to 2.",
+          "error": null
+        }
+      ],
+      "summary": {
+        "successCount": 17,
+        "totalModels": 22,
+        "fastestModel": "qwen/qwen3-coder-480b-a35b-instruct",
+        "fastestTime": 4049
+      }
+    },
+    {
       "timestamp": "2026-05-02T18:04:32Z",
       "prompt": "Write a Python function that checks if a number is prime and returns True or False",
       "models": [
