@@ -4,14 +4,14 @@
 
 [![CI](https://github.com/MauroDruwel/NIMStats/actions/workflows/benchmark.yml/badge.svg)](https://github.com/MauroDruwel/NIMStats/actions)
 [![Live Dashboard](https://img.shields.io/badge/🌐%20live-nimstats.maurodruwel.be-76b900?style=flat-square)](https://nimstats.maurodruwel.be/)
-[![Models](https://img.shields.io/badge/models-20%2B-blue?style=flat-square)](https://build.nvidia.com/models)
+[![Models](https://img.shields.io/badge/models-20-blue?style=flat-square)](https://build.nvidia.com/models)
 [![License: MIT](https://img.shields.io/badge/license-MIT-yellow?style=flat-square)](LICENSE)
 [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen?style=flat-square)](https://github.com/MauroDruwel/NIMStats/pulls)
 [![Stars](https://img.shields.io/github/stars/MauroDruwel/NIMStats?style=flat-square&color=gold)](https://github.com/MauroDruwel/NIMStats/stargazers)
 
 <br/>
 
-> **Community-driven benchmarking of 20+ NVIDIA NIM models — fully automated, zero infra cost, self-hostable in minutes.**
+> **Community-driven benchmarking of 20 NVIDIA NIM models — fully automated, zero infra cost, self-hostable in minutes.**
 
 <br/>
 
@@ -23,11 +23,11 @@
 
 ## ✨ What is NIMStats?
 
-NIMStats automatically benchmarks **20+ NVIDIA NIM models** every hour using GitHub Actions and publishes the results to a beautiful, interactive dashboard. No servers, no subscriptions — just fork, add your API key, and go.
+NIMStats automatically benchmarks **20 NVIDIA NIM models** every 20 minutes using GitHub Actions and publishes the results to a beautiful, interactive dashboard. No servers, no subscriptions — just fork, add your API key, and go.
 
 <div align="center">
 
-| 🏎️ Hourly Benchmarks | 📊 Interactive Charts | 🔁 Zero Infrastructure | 🌍 Fully Open-Source |
+| 🏎️ 20-Minute Benchmarks | 📊 Interactive Charts | 🔁 Zero Infrastructure | 🌍 Fully Open-Source |
 |:---:|:---:|:---:|:---:|
 | Automatic via GitHub Actions | Response time, throughput & trends | Static site + free CI/CD | Fork and self-host in minutes |
 
@@ -70,7 +70,7 @@ In your forked repo: **Settings → Secrets and variables → Actions → New re
 
 **Actions → Benchmark NVIDIA NIM Models → Run workflow**
 
-That's it — your dashboard auto-refreshes every hour. ✨
+That's it — your dashboard auto-refreshes every 20 minutes. ✨
 
 ---
 
@@ -82,7 +82,7 @@ That's it — your dashboard auto-refreshes every hour. ✨
 |-----|-------------|
 | **📊 Overview** | 5 animated KPI cards · success trend charts · top-10 speed & throughput bars · model reliability pills |
 | **🏆 Leaderboard** | Composite score rankings · sortable columns · SVG sparklines · trend indicators (↑↓→) · provider chips |
-| **🔬 Explorer** | Per-model deep dive · 64-run response time history chart · error breakdown donut · availability heatmap |
+| **🔬 Explorer** | Per-model deep dive · response time history chart · error breakdown donut · availability heatmap |
 | **⏱ Timeline** | Filterable run history (All / 24h / 48h / 7d) · expandable run cards with full per-model detail |
 | **⚔️ Compare** | Head-to-head overlay chart · win-rate stats · side-by-side metric comparison |
 
@@ -93,7 +93,7 @@ That's it — your dashboard auto-refreshes every hour. ✨
 ## 🤖 Benchmarked Models
 
 <details>
-<summary><b>20 models across 8 providers — click to expand</b></summary>
+<summary><b>20 models across 9 providers — click to expand</b></summary>
 
 <br/>
 
@@ -104,21 +104,21 @@ That's it — your dashboard auto-refreshes every hour. ✨
 | **DeepSeek** | `deepseek-ai/deepseek-v3.2` | Latest with improved reasoning |
 | **Z-AI** | `z-ai/glm-5.1` | Superior code understanding |
 | **Z-AI** | `z-ai/glm-4.7` | Strong mathematical capabilities |
-| **MiniMax** | `minimax/minimax-m2.7` | Efficient inference model |
-| **MiniMax** | `minimax/minimax-m2.5` | Previous generation MiniMax |
+| **MiniMax** | `minimaxai/minimax-m2.7` | Efficient inference model |
+| **MiniMax** | `minimaxai/minimax-m2.5` | Previous generation MiniMax |
 | **NVIDIA** | `nvidia/nemotron-3-super-120b-a12b` | NVIDIA's 120B flagship |
-| **NVIDIA** | `nvidia/nemotron-4-340b-instruct` | 340B instruction-tuned |
-| **NVIDIA** | `nvidia/llama-3.1-nemotron-ultra-253b-v1` | Ultra-large 253B model |
-| **Moonshot** | `moonshotai/kimi-k2.5` | Context-optimized model |
+| **Moonshot** | `moonshotai/kimi-k2.6` | Context-optimized model |
 | **Moonshot** | `moonshotai/kimi-k2-instruct` | Instruction-tuned Kimi |
-| **GPT-OSS** | `gpt-oss/gpt-oss-120b` | Open-source 120B |
+| **OpenAI** | `openai/gpt-oss-120b` | Open-source 120B |
 | **Google** | `google/gemma-4-31b-it` | Lightweight edge inference |
 | **Qwen** | `qwen/qwen3-coder-480b-a35b-instruct` | Specialized coding (480B MoE) |
 | **Qwen** | `qwen/qwen2.5-coder-32b-instruct` | Lightweight Qwen coder |
 | **Qwen** | `qwen/qwen3.5-397b-a17b` | Flagship Qwen (397B) |
 | **Mistral** | `mistralai/devstral-2-123b-instruct-2512` | Developer-focused (123B) |
 | **Mistral** | `mistralai/mistral-large-3-675b-instruct-2512` | Largest Mistral (675B) |
-| **Meta** | `meta/llama-3.1-405b-instruct` | Meta's largest Llama (405B) |
+| **Meta** | `meta/llama-3_3-70b-instruct` | Llama 3.3 70B |
+| **Meta** | `meta/llama-4-maverick-17b-128e-instruct` | Llama 4 Maverick (128 experts) |
+| **Meta** | `meta/llama-3.2-90b-vision-instruct` | Multimodal 90B vision model |
 
 </details>
 
@@ -127,7 +127,7 @@ That's it — your dashboard auto-refreshes every hour. ✨
 ## 🏗️ How It Works
 
 ```
-┌──────────────────────── GitHub Actions (every hour) ────────────────────────┐
+┌──────────────────── GitHub Actions (every 20 minutes) ──────────────────────┐
 │                                                                               │
 │   ┌─────────────────────┐        ┌─────────────────────┐                    │
 │   │  Job 1 — Group A    │        │  Job 2 — Group B    │  (run in parallel) │
@@ -135,12 +135,12 @@ That's it — your dashboard auto-refreshes every hour. ✨
 │   └──────────┬──────────┘        └──────────┬──────────┘                    │
 │              └──────────────┬───────────────┘                               │
 │                    ┌────────▼────────┐                                       │
-│                    │  Merge + commit │  → history.json updated in repo       │
+│                    │  Merge + commit │  → history.db updated in repo         │
 │                    └─────────────────┘                                       │
 └───────────────────────────────────────────────────────────────────────────── ┘
                                      │
                           ┌──────────▼──────────┐
-                          │  Static Dashboard   │  rebuilds on each push  
+                          │  Static Dashboard   │  rebuilds on each push
                           │  (Pages / Netlify)  │
                           └─────────────────────┘
 ```
@@ -163,9 +163,9 @@ PROMPT = "Your custom prompt here"
 <details>
 <summary><b>Add or remove models</b></summary>
 
-Edit the model arrays in `scripts/test_models.py`:
+Edit `ALL_MODELS` in `scripts/test_models.py`:
 ```python
-GROUP1_MODELS = [
+ALL_MODELS = [
     "your/custom-model",
     # ...
 ]
@@ -177,7 +177,7 @@ GROUP1_MODELS = [
 
 Edit `.github/workflows/benchmark.yml`:
 ```yaml
-- cron: '0 */6 * * *'  # Every 6 hours instead of every hour
+- cron: '0 */6 * * *'  # Every 6 hours instead of every 20 minutes
 ```
 </details>
 
@@ -197,32 +197,15 @@ python3 scripts/test_models.py
 
 ---
 
-## 📦 Data Format
+## 📦 Data Storage
 
-`history.json` is the single source of truth persisted in the repo. `scripts/results.json` is a temporary per-job artifact only.
+`history.db` is a SQLite database persisted in the repo — the single source of truth. The browser loads it via [sql.js](https://sql.js.org/) (WebAssembly) and queries it entirely client-side. `scripts/results.json` is a temporary per-job artifact that is never committed.
 
-```jsonc
-{
-  "runs": [{
-    "timestamp": "2026-04-28T06:49:00Z",
-    "prompt": "...",
-    "models": [{
-      "model": "deepseek-ai/deepseek-v4-flash",
-      "success": true,
-      "responseTime": 2500,       // ms — request to response
-      "tokensGenerated": 150,
-      "totalTokens": 170,
-      "response": "...",          // full model response text
-      "error": null               // error message string if success: false
-    }],
-    "summary": {
-      "successCount": 20,
-      "totalModels": 20,
-      "fastestModel": "...",
-      "fastestTime": 2500
-    }
-  }]
-}
+**Schema:**
+
+```sql
+runs          (id, timestamp, prompt, success_count, total_models, fastest_model, fastest_time)
+model_results (run_id, model, success, error, response_time, tokens_generated, total_tokens, response)
 ```
 
 **Benchmark parameters:** `temperature: 0.7` · `top_p: 0.9` · `max_tokens: 500` · OpenAI-compatible API
@@ -255,6 +238,7 @@ Please read through open [Issues](https://github.com/MauroDruwel/NIMStats/issues
 - [NVIDIA NIM API Documentation](https://docs.api.nvidia.com/nim/)
 - [NVIDIA Model Catalog](https://build.nvidia.com/models)
 - [GitHub Actions Docs](https://docs.github.com/en/actions)
+- [sql.js — SQLite in the browser](https://sql.js.org/)
 
 ---
 

@@ -266,7 +266,7 @@ def main() -> int:
     print(f"Results saved to {OUTPUT_FILE.name}")
     print(f"Summary: {success_count}/{total_count} successful")
 
-    if MODEL_GROUP in ("all", ""):
+    if MODEL_GROUP == "all":
         update_history(final_json)
 
     return 0

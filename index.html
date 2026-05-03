@@ -297,7 +297,7 @@ td{padding:10px 16px;color:var(--text);vertical-align:middle}
     <div id="error-state">
       <div class="err-icon">⚠️</div>
       <h2>Failed to load benchmark data</h2>
-      <p id="error-msg">Could not fetch history.json. Make sure the file exists and you're serving this page via HTTP.</p>
+      <p id="error-msg">Could not fetch history.db. Make sure the file exists and you're serving this page via HTTP.</p>
     </div>
 
     <!-- OVERVIEW -->
@@ -730,7 +730,6 @@ function processData(data) {
     // Last seen
     for (let i = results.length - 1; i >= 0; i--) {
       if (results[i] && results[i].success) {
-        state.modelStats; // placeholder
         modelStats[model].lastSeen = runs[i]?.timestamp || null;
         break;
       }
