@@ -4,14 +4,14 @@
 
 [![CI](https://github.com/MauroDruwel/NIMStats/actions/workflows/benchmark.yml/badge.svg)](https://github.com/MauroDruwel/NIMStats/actions)
 [![Live Dashboard](https://img.shields.io/badge/🌐%20live-nimstats.maurodruwel.be-76b900?style=flat-square)](https://nimstats.maurodruwel.be/)
-[![Models](https://img.shields.io/badge/models-17-blue?style=flat-square)](https://build.nvidia.com/models)
+[![Models](https://img.shields.io/badge/models-20-blue?style=flat-square)](https://build.nvidia.com/models)
 [![License: MIT](https://img.shields.io/badge/license-MIT-yellow?style=flat-square)](LICENSE)
 [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen?style=flat-square)](https://github.com/MauroDruwel/NIMStats/pulls)
 [![Stars](https://img.shields.io/github/stars/MauroDruwel/NIMStats?style=flat-square&color=gold)](https://github.com/MauroDruwel/NIMStats/stargazers)
 
 <br/>
 
-> **Community-driven benchmarking of 17 NVIDIA NIM models — fully automated, zero infra cost, self-hostable in minutes.**
+> **Community-driven benchmarking of 20 NVIDIA NIM models — fully automated, zero infra cost, self-hostable in minutes.**
 
 <br/>
 
@@ -23,7 +23,7 @@
 
 ## ✨ What is NIMStats?
 
-NIMStats automatically benchmarks **17 NVIDIA NIM models** every hour using GitHub Actions and publishes the results to a beautiful, interactive dashboard. No servers, no subscriptions — just fork, add your API key, and go.
+NIMStats automatically benchmarks **20 NVIDIA NIM models** every hour using GitHub Actions and publishes the results to a beautiful, interactive dashboard. No servers, no subscriptions — just fork, add your API key, and go.
 
 <div align="center">
 
@@ -93,7 +93,7 @@ That's it — your dashboard auto-refreshes every hour. ✨
 ## 🤖 Benchmarked Models
 
 <details>
-<summary><b>17 models across 11 providers — click to expand</b></summary>
+<summary><b>20 models across 11 providers — click to expand</b></summary>
 
 <br/>
 
@@ -107,6 +107,7 @@ That's it — your dashboard auto-refreshes every hour. ✨
 | **MiniMax** | `minimaxai/minimax-m2.7` | Efficient inference model |
 | **MiniMax** | `minimaxai/minimax-m2.5` | Previous generation MiniMax |
 | **NVIDIA** | `nvidia/nemotron-3-super-120b-a12b` | NVIDIA's 120B flagship |
+| **NVIDIA** | `nvidia/nemotron-3-nano-omni-30b-a3b-reasoning` | Compact omni reasoning model |
 | **Moonshot** | `moonshotai/kimi-k2.6` | Context-optimized model |
 | **Moonshot** | `moonshotai/kimi-k2-instruct` | Instruction-tuned Kimi |
 | **OpenAI** | `openai/gpt-oss-120b` | Open-source 120B |
@@ -114,8 +115,10 @@ That's it — your dashboard auto-refreshes every hour. ✨
 | **Qwen** | `qwen/qwen3-coder-480b-a35b-instruct` | Specialized coding (480B MoE) |
 | **Qwen** | `qwen/qwen2.5-coder-32b-instruct` | Lightweight Qwen coder |
 | **Qwen** | `qwen/qwen3.5-397b-a17b` | Flagship Qwen (397B) |
+| **Qwen** | `qwen/qwen3.5-122b-a10b` | Mid-range Qwen 3.5 MoE |
 | **Mistral** | `mistralai/devstral-2-123b-instruct-2512` | Developer-focused (123B) |
 | **Mistral** | `mistralai/mistral-large-3-675b-instruct-2512` | Largest Mistral (675B) |
+| **Mistral** | `mistralai/mistral-medium-3.5-128b` | Efficient medium-scale Mistral |
 | **Meta** | `meta/llama-3_3-70b-instruct` | Llama 3.3 70B |
 | **Meta** | `meta/llama-4-maverick-17b-128e-instruct` | Llama 4 Maverick (128 experts) |
 | **Meta** | `meta/llama-3.2-90b-vision-instruct` | Multimodal 90B vision model |
