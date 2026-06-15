@@ -39,7 +39,7 @@ ALL_MODELS = [
     "qwen/qwen3.5-397b-a17b",                 # Qwen flagship
     
     # Router / Memory
-    "minimaxai/minimax-m2.7",                 # Intent classification
+    "minimaxai/minimax-m3",                   # Intent classification
 ]
 
 # Split 8 models across 2 parallel jobs (4 + 4)
