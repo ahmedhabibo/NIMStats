@@ -48,6 +48,31 @@ body::before{content:'';position:fixed;inset:0;z-index:-1;background:
 
 /* Nav */
 nav{position:sticky;top:0;z-index:200;background:rgba(8,8,16,0.92);backdrop-filter:blur(20px);border-bottom:1px solid var(--border);height:60px;display:flex;align-items:center;padding:0 24px;gap:4px}
+
+/* Benchmark type filter bar (global) */
+#benchmark-filter-bar{
+  position:sticky;top:60px;z-index:190;
+  display:flex;align-items:center;gap:14px;
+  background:rgba(8,8,16,0.85);backdrop-filter:blur(20px);
+  border-bottom:1px solid var(--border);
+  padding:10px 24px;
+  flex-wrap:wrap;
+}
+.bf-label{font-size:11px;font-weight:600;letter-spacing:0.6px;text-transform:uppercase;color:var(--text-muted)}
+.bf-pills{display:flex;gap:6px;flex-wrap:wrap}
+.bf-pill{
+  background:var(--bg-card);border:1px solid var(--border);color:var(--text-dim);
+  font-family:'Inter',sans-serif;font-size:12px;font-weight:500;
+  padding:6px 14px;border-radius:20px;cursor:pointer;
+  transition:all 0.2s;display:inline-flex;align-items:center;gap:6px;
+}
+.bf-pill:hover{border-color:var(--border-bright);color:var(--text)}
+.bf-pill.active{background:var(--accent-dim);border-color:rgba(118,185,0,0.3);color:var(--accent)}
+.bf-pill small{font-size:10px;opacity:0.75;padding:1px 6px;background:rgba(255,255,255,0.06);border-radius:8px}
+.bf-pill.active small{background:rgba(118,185,0,0.18)}
+.bf-stats{margin-left:auto;font-size:11px;color:var(--text-muted);font-family:'JetBrains Mono',monospace}
+@media(max-width:680px){.bf-stats{display:none}}
+
 .nav-brand{font-size:18px;font-weight:800;color:var(--accent);letter-spacing:-0.5px;margin-right:20px;white-space:nowrap}
 .nav-brand span{color:var(--text-dim);font-weight:300}
 .nav-tabs{display:flex;gap:2px;flex:1}
@@ -293,6 +318,16 @@ td{padding:10px 16px;color:var(--text);vertical-align:middle}
     <div class="nav-status" id="nav-status"></div>
   </nav>
 
+  <div id="benchmark-filter-bar">
+    <span class="bf-label">Benchmark:</span>
+    <div class="bf-pills">
+      <button class="bf-pill active" data-bench="all">All Models</button>
+      <button class="bf-pill" data-bench="main">🟢 Main Chain<small></small></button>
+      <button class="bf-pill" data-bench="aux">🔧 Aux Slots<small></small></button>
+    </div>
+    <span id="bf-stats" class="bf-stats"></span>
+  </div>
+
   <main>
     <div id="error-state">
       <div class="err-icon">⚠️</div>
@@ -519,7 +554,8 @@ const state = {
   lbSort: { col: 'score', dir: 'desc' },
   lbFilter: '',
   timelineFilter: 'all',
-  modalResponse: ''
+  modalResponse: '',
+  benchmarkType: 'all'   // 'all' | 'main' | 'aux'
 };
 
 // ─── Helpers ─────────────────────────────────────────────────────────────────
@@ -657,17 +693,18 @@ function escHtml(s) {
   return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
 }
 
-// ─── SQLite Data Loader ───────────────────────────────────────────────────────
+// ─── SQLite Data Loader ──────────────────────────────────────────────────
 function loadFromDb(db) {
   const runsQ = db.exec(
-    'SELECT id, timestamp, prompt, success_count, total_models, fastest_model, fastest_time FROM runs ORDER BY timestamp DESC'
+    'SELECT id, timestamp, prompt, success_count, total_models, fastest_model, fastest_time, benchmark_type FROM runs ORDER BY timestamp DESC'
   );
   if (!runsQ.length || !runsQ[0].values.length) return { runs: [] };
 
-  const runs = runsQ[0].values.map(([id, timestamp, prompt, sc, tm, fm, ft]) => ({
+  const runs = runsQ[0].values.map(([id, timestamp, prompt, sc, tm, fm, ft, bt]) => ({
     _dbId: id,
     timestamp,
     prompt,
+    benchmarkType: bt || 'main',
     models: [],
     summary: { successCount: sc, totalModels: tm, fastestModel: fm, fastestTime: ft }
   }));
@@ -696,9 +733,12 @@ function loadFromDb(db) {
   return { runs };
 }
 
-// ─── Data Processing ──────────────────────────────────────────────────────────
+// ─── Data Processing ───────────────────────────────────────────────────
 function processData(data) {
-  const runs = [...data.runs].reverse(); // chronological
+  let runs = [...data.runs].reverse(); // chronological
+  if (state.benchmarkType !== 'all') {
+    runs = runs.filter(r => (r.benchmarkType || 'main') === state.benchmarkType);
+  }
   const modelNames = [...new Set(runs.flatMap(r => r.models.map(m => m.model)))];
   const modelStats = {};
 
@@ -1054,11 +1094,17 @@ function initLeaderboardSort() {
 // ─── Explorer Tab ─────────────────────────────────────────────────────────────
 function populateExplorerSelect() {
   const sel = document.getElementById('explorer-select');
-  const sorted = [...state.modelNames].sort((a,b) => state.modelStats[b].score - state.modelStats[a].score);
-  sel.innerHTML = sorted.map(m =>
+  if (!sel) return;
+  const sorted = [...state.modelNames].sort((a,b) => (state.modelStats[b]?.score || 0) - (state.modelStats[a]?.score || 0));
+
+  // Rebuild without stacking listeners
+  const newSel = sel.cloneNode(false);
+  newSel.innerHTML = sorted.map(m =>
     `<option value="${m}"${m === state.explorerModel ? ' selected' : ''}>${shortModel(m)} (${providerMeta(m).name})</option>`
   ).join('');
-  sel.addEventListener('change', e => {
+  sel.parentNode.replaceChild(newSel, sel);
+
+  newSel.addEventListener('change', e => {
     state.explorerModel = e.target.value;
     renderExplorer();
   });
@@ -1270,28 +1316,40 @@ function renderTimeline() {
 
 // ─── Compare Tab ──────────────────────────────────────────────────────────────
 function populateCompareSelects() {
-  const sorted = [...state.modelNames].sort((a,b) => state.modelStats[b].score - state.modelStats[a].score);
+  const sorted = [...state.modelNames].sort((a,b) => (state.modelStats[b]?.score || 0) - (state.modelStats[a]?.score || 0));
   const opts = sorted.map(m => `<option value="${m}">${shortModel(m)} (${providerMeta(m).name})</option>`).join('');
 
   const selA = document.getElementById('compare-a');
   const selB = document.getElementById('compare-b');
-  selA.innerHTML = opts;
-  selB.innerHTML = opts;
+  if (!selA || !selB) return;
+
+  // Clone to avoid stacking listeners on repeated calls
+  const newA = selA.cloneNode(false);
+  const newB = selB.cloneNode(false);
+  newA.innerHTML = opts;
+  newB.innerHTML = opts;
+  selA.parentNode.replaceChild(newA, selA);
+  selB.parentNode.replaceChild(newB, selB);
 
   const defaultA = 'qwen/qwen3-coder-480b-a35b-instruct';
   const defaultB = 'nvidia/nemotron-3-super-120b-a12b';
-  selA.value = state.modelNames.includes(defaultA) ? defaultA : sorted[0];
-  selB.value = state.modelNames.includes(defaultB) ? defaultB : sorted[1];
+  newA.value = state.modelNames.includes(defaultA) ? defaultA : (sorted[0] || '');
+  newB.value = state.modelNames.includes(defaultB) ? defaultB : (sorted[1] || sorted[0] || '');
 
-  selA.addEventListener('change', renderCompare);
-  selB.addEventListener('change', renderCompare);
+  newA.addEventListener('change', renderCompare);
+  newB.addEventListener('change', renderCompare);
 
-  document.getElementById('swap-btn').addEventListener('click', () => {
-    const tmp = selA.value;
-    selA.value = selB.value;
-    selB.value = tmp;
-    renderCompare();
-  });
+  const swapBtn = document.getElementById('swap-btn');
+  if (swapBtn) {
+    const newSwap = swapBtn.cloneNode(true);
+    swapBtn.parentNode.replaceChild(newSwap, swapBtn);
+    newSwap.addEventListener('click', () => {
+      const tmp = newA.value;
+      newA.value = newB.value;
+      newB.value = tmp;
+      renderCompare();
+    });
+  }
 }
 
 function renderCompare() {
@@ -1469,6 +1527,56 @@ function switchTab(tabName) {
   if (tabName === 'compare') renderCompare();
 }
 
+// ─── Benchmark-type filter (global) ──────────────────────────────────────────────────
+function switchBenchmarkType(type) {
+  state.benchmarkType = type;
+
+  document.querySelectorAll('.bf-pill[data-bench]').forEach(p =>
+    p.classList.toggle('active', p.dataset.bench === type));
+
+  // Rebuild processed data with new filter
+  if (state.db) {
+    const data = loadFromDb(state.db);
+    const processed = processData(data);
+    state.runs = processed.runs;
+    state.modelNames = processed.modelNames;
+    state.modelStats = processed.modelStats;
+
+    // Repopulate selects so they reflect the filtered model set
+    if (state.modelNames.includes(state.explorerModel)) {
+      // Keep current selection
+    } else {
+      state.explorerModel = state.modelNames[0] || '';
+    }
+    populateExplorerSelect();
+    populateCompareSelects();
+
+    // Refresh all tabs
+    updateBenchmarkStats(data.runs);
+    const tab = state.currentTab;
+    if (tab === 'overview') renderOverview();
+    else if (tab === 'leaderboard') renderLeaderboard();
+    else if (tab === 'explorer') renderExplorer();
+    else if (tab === 'timeline') renderTimeline();
+    else if (tab === 'compare') renderCompare();
+  }
+}
+
+function updateBenchmarkStats(allRuns) {
+  const main = allRuns.filter(r => (r.benchmarkType || 'main') === 'main');
+  const aux  = allRuns.filter(r => r.benchmarkType === 'aux');
+  const mainPill = document.querySelector('.bf-pill[data-bench="main"] small');
+  const auxPill  = document.querySelector('.bf-pill[data-bench="aux"] small');
+  if (mainPill) mainPill.textContent = main.length;
+  if (auxPill)  auxPill.textContent  = aux.length;
+  const stats = document.getElementById('bf-stats');
+  if (stats) {
+    const lastMain = main[0]?.timestamp?.replace('T',' ').slice(0,16) || '—';
+    const lastAux  = aux[0]?.timestamp?.replace('T',' ').slice(0,16) || '—';
+    stats.textContent = `main: ${main.length} runs (last ${lastMain}) · aux: ${aux.length} runs (last ${lastAux})`;
+  }
+}
+
 // ─── Initialization ───────────────────────────────────────────────────────────
 async function init() {
   try {
@@ -1492,6 +1600,9 @@ async function init() {
     document.getElementById('nav-status').textContent =
       `${state.runs.length} runs · ${state.modelNames.length} models`;
 
+    // Benchmark-type filter counts
+    updateBenchmarkStats(data.runs);
+
     // Populate selects
     populateExplorerSelect();
     populateCompareSelects();
@@ -1512,6 +1623,11 @@ async function init() {
     // Nav tabs
     document.querySelectorAll('.nav-tab[data-goto]').forEach(btn => {
       btn.addEventListener('click', () => switchTab(btn.dataset.goto));
+    });
+
+    // Benchmark type filter
+    document.querySelectorAll('.bf-pill[data-bench]').forEach(btn => {
+      btn.addEventListener('click', () => switchBenchmarkType(btn.dataset.bench));
     });
 
     // Modal controls
