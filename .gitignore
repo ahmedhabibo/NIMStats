@@ -35,3 +35,9 @@ scripts/results*.json
 __pycache__/
 *.pyc
 MauroDruwel-NIMStats-9adbee2/
+
+# wrangler files
+.wrangler
+.dev.vars*
+!.dev.vars.example
+!.env.example
